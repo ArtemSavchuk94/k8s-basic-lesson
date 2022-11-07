@@ -1,0 +1,23 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata: 
+   name:  my-web-deploymet-relicas
+   labels:
+      app : my-k8s-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+       project: ufs
+  template:
+    metadata:
+      labels:
+        project: ufs
+    spec: 
+      containers:
+        - name: kfs-web
+          image: nginx:latest
+          ports: 
+            - containerPort: 80        
+
+

@@ -1,0 +1,45 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata: 
+   name:  my-web-deploymet-autoscaling
+   labels:
+      app : my-k8s-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+       project: mls
+  template:
+    metadata:
+      labels:
+        project: mls
+    spec: 
+      containers:
+        - name: kfs-web
+          image: nginx:latest
+          ports: 
+            - containerPort: 80     
+--- 
+apiVersion : autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata: 
+  name: my-autoscaling
+spec:
+  scaleTargetRef:
+    apiVersion : app/v2beta1v1
+    kind : Deployment
+    name: my-autoscaling
+minReplicas: 1
+maxReplicas: 2
+metrics:
+  - type: Resourse
+    resourse :
+      name : cpu
+      targetAverageUtilization : 70
+  - type : Resourse
+    resourse:
+      name: memory
+      targetAverageUtilization : 80
+
+
+

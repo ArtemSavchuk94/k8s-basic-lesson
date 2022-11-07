@@ -1,0 +1,22 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata: 
+   name:  my-web-deploymet
+   labels:
+      app : my-k8s-app
+spec:
+  selector:
+    matchLabels:
+       project: kfs
+  template:
+    metadata:
+      labels:
+        project: kfs
+    spec: 
+      containers:
+        - name: kfs-web
+          image: nginx:latest
+          ports: 
+            - containerPort: 80        
+
+

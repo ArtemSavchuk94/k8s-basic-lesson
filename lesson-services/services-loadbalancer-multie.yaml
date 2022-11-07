@@ -1,0 +1,53 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata: 
+   name:  my-web-deploymet-multi
+   labels:
+      app : my-k8s-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+       project: apl
+  template:
+    metadata:
+      labels:
+        project: apl
+    spec: 
+      containers:
+        - name: apl-web
+          image: nginx:latest
+          ports: 
+            - containerPort: 80  
+        - name: apl-no-web
+          image: tomcat:8.5.38
+          ports: 
+            - containerPort: 8080     
+
+--- 
+apiVersion : v1
+kind: Service
+metadata: 
+   name:  my-multi-pod-services
+   labels:
+     env : prod
+     owner: AS 
+spec:
+  type: LoadBalancer
+  selector:
+       project: apl
+  ports: 
+    - name: web-app-listener
+      protocol: TCP
+      port       : 80
+      targetPort : 80
+    - name: not-web-app-listener
+      protocol: TCP
+      port       : 8888
+      targetPort : 8080
+          
+
+
+
+
+
